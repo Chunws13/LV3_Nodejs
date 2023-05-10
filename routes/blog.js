@@ -63,19 +63,19 @@ router.post('/post', loginAuth, async(req, res) => {
 
 // 게시글 수정
 router.put('/posts/:_postId', loginAuth, async(req, res) => {
-    const { _postId } = req.params;
-    const { userId } = res.locals.user;
-    const { newTitle, newContent } = req.body;
-
-    const detailData = await Blogs.findOne({
-        where: { postId: _postId }
-    });
-
-    if (!detailData) {
-        return res.status(400).json({ message: "게시글 조회에 실패하였습니다." })
-    }
-
     try {
+        const { _postId } = req.params;
+        const { userId } = res.locals.user;
+        const { newTitle, newContent } = req.body;
+
+        const detailData = await Blogs.findOne({
+            where: { postId: _postId }
+        });
+
+        if (!detailData) {
+            return res.status(400).json({ message: "게시글 조회에 실패하였습니다." })
+        }
+
         if (userId !== detailData.UserId) {
             return res.status(403).send({
                 errorMessage: "게시글 수정 권한이 존재하지 않습니다."
@@ -98,16 +98,16 @@ router.put('/posts/:_postId', loginAuth, async(req, res) => {
 
 // 게시글 삭제
 router.delete('/posts/:_postId', loginAuth, async(req, res) => {
-    const { _postId } = req.params;
-    const { userId } = res.locals.user;
-    const detailData = await Blogs.findOne({ where: { postId: _postId } });
-
-    if (!detailData) {
-        return res.status(400).json({ message: "게시글 조회에 실패했습니다." })
-
-    }
-
     try {
+        const { _postId } = req.params;
+        const { userId } = res.locals.user;
+        const detailData = await Blogs.findOne({ where: { postId: _postId } });
+
+        if (!detailData) {
+            return res.status(400).json({ message: "게시글 조회에 실패했습니다." })
+
+        }
+
         if (userId !== detailData.UserId) {
             return res.status(403).send({
                 errorMessage: "게시글 삭제 권한이 없습니다."
