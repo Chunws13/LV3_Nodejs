@@ -1,7 +1,9 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
+const { Users } = require("../models");
 const router = express.Router();
+require('dotenv').config();
 // const User = require("../schemas/user.js"); db 변경으로 인해 미사용
 
 router.post('/login', async(req, res) => {
@@ -19,7 +21,7 @@ router.post('/login', async(req, res) => {
             })
         }
 
-        const token = jwt.sign({ nickname: userCheck.nickname }, "keys");
+        const token = jwt.sign({ nickname: userCheck.nickname }, env.KEY);
         res.cookie("authorization", `Bearer ${token}`)
         return res.status(200).json({ token });
 

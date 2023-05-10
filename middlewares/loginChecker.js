@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
-// const User = require("../schemas/user.js");
+require('dotenv').config();
+const env = process.env;
 
 module.exports = async(req, res, next) => {
     try {
@@ -13,7 +14,7 @@ module.exports = async(req, res, next) => {
         }
         const [tokenType, tokenValue] = authorization.split(" ");
 
-        const { nickname } = jwt.verify(tokenValue, "keys");
+        const { nickname } = jwt.verify(tokenValue, env.KEY);
         const user = await Users.findOne({ where: { nickname: nickname } });
 
         // 인증 실패
